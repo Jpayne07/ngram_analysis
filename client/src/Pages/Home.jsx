@@ -1,12 +1,62 @@
-import React from "react";
-import { useState } from 'react'
+import React, { useState, useRef } from "react";
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 
 function Home() {
 const [count, setCount] = useState(0)
+const [fileUpload, setFileUpload] = useState({})
+
+const inputFile = useRef(null);
+
+const handleReset = () => {
+  if (inputFile.current) {
+      inputFile.current.value = "";
+      inputFile.current.type = "text";
+      inputFile.current.type = "file";
+
+  }
+};
+
+const handleFileUpload = (e)=>{
+  e.preventDefault()
+  const formData = new FormData()
+  formData.append('file', fileUpload)
+  e.preventDefault()
+  fetch('/api/upload/new', {
+    method:'POST',
+    body: formData
+  })
+  .then(r=>r.json())
+  .then(data => console.log(data))
+}
+
   return (
-    <div> <div>
+    <div> 
+      <h1>nGram Input</h1>
+      <form onSubmit={handleFileUpload}>
+        <input 
+          ref={inputFile} 
+          type="file" 
+          id="myFile" 
+          name="filename" 
+          onChange={(event) =>{
+              const file = event.target.files[0]['name']
+              if (file && file.endsWith("csv")){
+                console.log(event.target.files[0])
+                setFileUpload(event.target.files[0])
+                
+              }
+              else{
+                
+                alert("Uploaded file must be CSV")
+                handleReset()
+              }
+            
+        }}/>
+       <input type="submit" />
+        
+      </form>
+      <div>
     <a href="https://vite.dev" target="_blank">
       <img src={viteLogo} className="logo" alt="Vite logo" />
     </a>
