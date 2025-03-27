@@ -1,9 +1,6 @@
 import React, { useState, useRef } from "react";
-import reactLogo from '../assets/react.svg'
-import viteLogo from '/vite.svg'
 
 function Home() {
-const [count, setCount] = useState(0)
 const [fileUpload, setFileUpload] = useState({})
 
 const inputFile = useRef(null);
@@ -22,13 +19,25 @@ const handleFileUpload = (e)=>{
   const formData = new FormData()
   formData.append('file', fileUpload)
   e.preventDefault()
-  fetch('/api/upload/new', {
+
+  fetch(`${process.env.DATABASE_URI}/api/ngram/upload/new`, {
     method:'POST',
     body: formData
   })
-  .then(r=>r.json())
-  .then(data => console.log(data))
+  .then(r=>r.blob())
+  .then(setDownload(true))
+  .then(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'word_frequencies.csv'; // fallback filename
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  })
 }
+
 
   return (
     <div> 
@@ -56,26 +65,7 @@ const handleFileUpload = (e)=>{
        <input type="submit" />
         
       </form>
-      <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src={viteLogo} className="logo" alt="Vite logo" />
-    </a>
-    <a href="https://react.dev" target="_blank">
-      <img src={reactLogo} className="logo react" alt="React logo" />
-    </a>
   </div>
-  <h1>Vite + React</h1>
-  <div className="card">
-    <button onClick={() => setCount((count) => count + 1)}>
-      count is {count}
-    </button>
-    <p>
-      Edit <code>src/App.jsx</code> and save to test HMR
-    </p>
-  </div>
-  <p className="read-the-docs">
-    Click on the Vite and React logos to learn more
-  </p></div>
   )
 }
 
