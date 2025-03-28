@@ -22,7 +22,7 @@ const handleFileUpload = (e)=>{
   formData.append('ngram', gramCount)
   e.preventDefault()
 
-  fetch(`/api/ngram/upload/new`, {
+  fetch(`https://ngram-analysis.onrender.com/api/ngram/upload/new`, {
     method:'POST',
     body: formData
   })
