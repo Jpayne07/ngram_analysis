@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 
 function Home() {
 const [fileUpload, setFileUpload] = useState({})
+const [gramCount, setGramCount] = useState(null)
 
 const inputFile = useRef(null);
 
@@ -18,14 +19,15 @@ const handleFileUpload = (e)=>{
   e.preventDefault()
   const formData = new FormData()
   formData.append('file', fileUpload)
+  formData.append('ngram', gramCount)
   e.preventDefault()
 
-  fetch(`${process.env.DATABASE_URI}/api/ngram/upload/new`, {
+  fetch(`/api/ngram/upload/new`, {
     method:'POST',
     body: formData
   })
   .then(r=>r.blob())
-  .then(setDownload(true))
+  // .then(setDownload(true))
   .then(blob => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -43,6 +45,10 @@ const handleFileUpload = (e)=>{
     <div> 
       <h1>nGram Input</h1>
       <form onSubmit={handleFileUpload}>
+        <label style={{padding:"10px", justifyContent:"left", textAlign:"left"}}>Enter Word Count</label>
+        <input type="text" style={{width:"150px"}} onChange={(e)=> setGramCount(e.target.value)} required/>
+        <br></br>
+        <br></br>
         <input 
           ref={inputFile} 
           type="file" 
@@ -51,9 +57,7 @@ const handleFileUpload = (e)=>{
           onChange={(event) =>{
               const file = event.target.files[0]['name']
               if (file && file.endsWith("csv")){
-                console.log(event.target.files[0])
                 setFileUpload(event.target.files[0])
-                
               }
               else{
                 
@@ -65,6 +69,9 @@ const handleFileUpload = (e)=>{
        <input type="submit" />
         
       </form>
+
+      
+
   </div>
   )
 }
