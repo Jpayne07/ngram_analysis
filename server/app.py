@@ -1,10 +1,16 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify, send_from_directory
+import os
 from flask_restful import Resource, Api
 from collections import defaultdict
 import io
 import csv
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_url_path='',
+    static_folder='../client/dist',
+    template_folder='../client/dist'
+)
 api = Api(app)
 
 class HelloWorld(Resource):
@@ -61,9 +67,28 @@ class HandleFormData(Resource):
         response.headers["Content-Disposition"] = "attachment; filename=word_frequencies.csv"
         response.headers["Content-type"] = "text/csv"
         return response
-
-api.add_resource(HelloWorld, '/')
+    
 api.add_resource(HandleFormData,'/api/ngram/upload/new')
 
+@app.route('/<path:path>')
+def serve_static(path):
+    file_path = os.path.join(app.static_folder, path)
+    if os.path.isfile(file_path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
+
+
+@app.errorhandler(404)
+def not_found(e):
+    # If the request path starts with /api, return a JSON response
+    if request.path.startswith('/api/'):
+        return jsonify({"error": "API endpoint not found"}), 404
+    # Otherwise, serve the React app
+    print(f"404 error encountered: {e}. Serving index.html")
+    return send_from_directory(app.static_folder, 'index.html')
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    print(f"Starting app on port {port}")
+    app.run(host='0.0.0.0', port=port, debug=True)
