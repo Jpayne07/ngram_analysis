@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { createRoot } from 'react-dom/client'
 import routes from './routes.jsx'
 import './index.css'
