@@ -21,6 +21,10 @@ class HandleFormData(Resource):
         # Read the first line
         absolute_freq = defaultdict(int)
         weighted_freq = defaultdict(float)
+        def get_ngrams(words, n):
+            return [' '.join(words[i:i+n]) for i in range(len(words) - n + 1)]
+        
+        n = int(request.form.get("ngram", 1))
         for row in reader:
             try:
                 phrase = row.get('word', '').strip().lower()
@@ -29,11 +33,12 @@ class HandleFormData(Resource):
                 if not phrase:
                     continue
 
-                unique_words = set(phrase.split())
+                tokens = phrase.split()
+                ngrams = set(get_ngrams(tokens, n))  # use set to deduplicate n-grams in a row
 
-                for word in unique_words:
-                    absolute_freq[word] += 1
-                    weighted_freq[word] += value
+                for ngram in ngrams:
+                    absolute_freq[ngram] += 1
+                    weighted_freq[ngram] += value
 
             except (ValueError, KeyError):
                 continue
@@ -58,7 +63,7 @@ class HandleFormData(Resource):
         return response
 
 api.add_resource(HelloWorld, '/')
-api.add_resource(HandleFormData,'/api/upload/new')
+api.add_resource(HandleFormData,'/api/ngram/upload/new')
 
 if __name__ == '__main__':
     app.run(debug=True)
