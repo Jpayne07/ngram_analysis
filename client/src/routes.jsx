@@ -4,12 +4,12 @@ import Home from './Pages/Home.jsx'
 
 const routes = [
     {
-        path: '/tools/nGram',
+        path: '/',
         element: <App />,
 
         children: [
             {
-                path:"/tools/nGram",
+                path:"/",
                 element: <Home />,
               }
         ]

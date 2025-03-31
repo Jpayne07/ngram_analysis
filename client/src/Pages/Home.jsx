@@ -22,22 +22,32 @@ const handleFileUpload = (e)=>{
   formData.append('ngram', gramCount)
   e.preventDefault()
 
-  fetch(`https://ngram-analysis.onrender.com/api/ngram/upload/new`, {
+  fetch(`/api/ngram/upload/new`, {
     method:'POST',
     body: formData
   })
   .then(r=>r.blob())
   // .then(setDownload(true))
-  .then(blob => {
-    const url = window.URL.createObjectURL(blob);
+  .then(blob => blob.text().then(text => {
+  const lines = text.trim().split('\n');
+
+  // Skip header and check if there's at least one more line
+  if (lines.length > 1) {
+    const url = window.URL.createObjectURL(new Blob([text]));
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'word_frequencies.csv'; // fallback filename
+    a.download = 'word_frequencies.csv';
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-  })
+  } else {
+    alert("Please ensure the upload rows are not empty and that the nGram is less than 5");
+  }
+}))
+.catch(err => console.error("Error handling blob response:", err));
+    
+
 }
 
 

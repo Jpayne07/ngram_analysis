@@ -7,10 +7,12 @@ import { AppProvider } from './AppContext.jsx'
 
 
 const root = createRoot(document.getElementById('root'))
-const router = createBrowserRouter(routes)
+const router = createBrowserRouter(routes,{
+  basename: "/ngram_analysis",
+})
 root.render(
     <AppProvider>
-      <RouterProvider router = {router} />
+      <RouterProvider router = {router}/>
     </AppProvider>
 
 )
