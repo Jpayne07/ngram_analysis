@@ -18,6 +18,9 @@ class HelloWorld(Resource):
         return {'hello': 'world'}
     
 class HandleFormData(Resource):
+    def get(self):
+        return {'hello': 'world'}
+
     def post(self):
         upload = request.files['file']
         decoded_file = upload.read().decode('utf-8')
@@ -62,12 +65,13 @@ class HandleFormData(Resource):
                 'weighted_frequency': weighted_freq[word]
             })
 
-        # Return it as a downloadable file
         response = make_response(output.getvalue())
         response.headers["Content-Disposition"] = "attachment; filename=word_frequencies.csv"
         response.headers["Content-type"] = "text/csv"
         return response
     
+
+api.add_resource(HelloWorld,'/')
 api.add_resource(HandleFormData,'/api/ngram/upload/new')
 
 @app.route('/<path:path>')
