@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 
 function Home() {
+const API_URL = import.meta.env.VITE_API_URL
+console.log(API_URL)
 const [fileUpload, setFileUpload] = useState({})
 const [gramCount, setGramCount] = useState(null)
 
@@ -22,7 +24,8 @@ const handleFileUpload = (e)=>{
   formData.append('ngram', gramCount)
   e.preventDefault()
 
-  fetch(`/api/ngram/upload/new`, {
+  
+  fetch(API_URL?`${API_URL}/api/ngram/upload/new`:"/api/ngram/upload/new", {
     method:'POST',
     body: formData
   })
