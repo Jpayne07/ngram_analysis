@@ -55,7 +55,7 @@ const handleFileUpload = (e)=>{
 
 
   return (
-    <div> 
+    <div id ="form_container"> 
       <h1>nGram Input</h1>
       <form onSubmit={handleFileUpload}>
         <label style={{padding:"10px", justifyContent:"left", textAlign:"left"}}>Enter Word Count</label>

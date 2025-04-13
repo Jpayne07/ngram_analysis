@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import routes from './routes.jsx'
 import './index.css'
 import { AppProvider } from './AppContext.jsx'
+import Nav from './components/Nav'
 
 
 
@@ -12,6 +13,7 @@ const router = createBrowserRouter(routes,{
 })
 root.render(
     <AppProvider>
+      <Nav />
       <RouterProvider router = {router}/>
     </AppProvider>
 
