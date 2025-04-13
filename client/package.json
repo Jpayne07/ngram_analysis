@@ -9,7 +9,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "npm run build && cd .. && touch docs/.nojekyll && git add docs && git commit -m 'Deploy' && git push"
+    "deploy": "npm run build && cd .. && rm -rf docs && mkdir docs && cp -r client/dist/* docs && touch docs/.nojekyll && git add docs && git commit -m 'Deploy to GitHub Pages' && git push"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.3",
