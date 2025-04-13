@@ -55,7 +55,9 @@ const handleFileUpload = (e)=>{
 
 
   return (
-    <div id ="form_container"> 
+    <div id ="form_container">
+      
+      <div className="p-20">
       <h1>nGram Input</h1>
       <form onSubmit={handleFileUpload}>
         <label style={{padding:"10px", justifyContent:"left", textAlign:"left"}}>Enter Word Count</label>
@@ -82,7 +84,13 @@ const handleFileUpload = (e)=>{
        <input type="submit" />
         
       </form>
-
+      </div>
+      <div id = "tooltip" className="bg-gray-300 rounded-lg border-3 border-blue-300 opacity-75 p-10 max-w-md text-left  ">
+        <p><strong>Description: </strong>This is a word analyzer tool directed toward SEO professionals.</p>
+        <p><strong>Considerations: </strong>Please ensure the file is a CSV and that the columns have no empty values. Simply upload your file and enter 1-5 to get back a list of phrases from your keywords exactly matching that length you enter.</p>
+        <p><strong>Useful for things like:</strong> Determining the most common phrases in a batch of keywords</p>
+        <p><strong>OR:</strong> Page templates where you want to have pages replicated from a relational database.</p>
+      </div>
       
 
   </div>
