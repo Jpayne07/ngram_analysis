@@ -26,7 +26,6 @@ a:hover {
 body {
   margin: 0;
   padding: 0;
-  width: 100%;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -37,9 +36,7 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-* {
-  outline: 1px solid red;
-}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
